@@ -3,82 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crystal Clicker - Incremental Game</title>
+    <title>Cherry Blossom Tree - Clicker</title>
     <link rel="stylesheet" href="css/styles.css">
-
 </head>
 <body>
-    <div class="game-container">
-        <h1>💎 Crystal Clicker 💎</h1>
+    <div class="game-container clicker-only">
+        <h1>🌸 Cherry Blossom Tree 🌸</h1>
+        <p class="nav-link"><a href="stats.html">Scoreboard & Upgrades →</a></p>
 
         <!-- Click Area -->
         <div class="panel click-area">
-            <h2>Click to Collect!</h2>
-            <button class="crystal-btn" id="clickBtn"></button>
-            <p class="click-text">Each click gives <span class="click-value" id="clickValueDisplay">+1</span> crystals</p>
+            <h2>Click the tree to add blossoms</h2>
+            <p class="blossom-count">Blossoms on tree: <span id="crystalCount">0</span></p>
+            <div class="tree-stage" id="treeStage">
+                <img class="tree-bare" id="treeBare" src="images/empty-tree.png" alt="">
+                <div class="tree-blossoms" id="treeBlossoms"></div>
+                <button class="tree-hit-area" id="clickBtn" aria-label="Click tree to add cherry blossoms"></button>
+            </div>
+            <p class="click-text">Each click adds <span class="click-value" id="clickValueDisplay">+1</span> blossom<span id="pluralS">s</span></p>
             <div class="auto-indicator" id="autoIndicator">
-                <p>Auto-collecting: <span class="auto-value" id="autoValue">0</span>/sec</p>
+                <p>Blossoms drifting in: <span class="auto-value" id="autoValue">0</span>/sec</p>
             </div>
-        </div>
-
-        <!-- Scoreboard -->
-        <div class="panel scoreboard">
-            <h2>📊 Scoreboard</h2>
-            
-            <div class="score-item">
-                <div class="score-label">Total Crystals</div>
-                <div class="score-value" id="totalCrystals">0</div>
-                <div class="visual-stats" id="crystalVisual"></div>
-            </div>
-
-            <div class="score-item">
-                <div class="score-label">Click Power</div>
-                <div class="score-value" id="clickPower">1</div>
-                <div class="visual-stats" id="powerVisual"></div>
-            </div>
-
-            <div class="score-item">
-                <div class="score-label">Total Clicks</div>
-                <div class="score-value" id="totalClicks">0</div>
-            </div>
-
-            <div class="score-item">
-                <div class="score-label">Upgrades Owned</div>
-                <div class="score-value" id="upgradesOwned">0</div>
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="upgradeProgress" style="width: 0%"></div>
-                        <span class="progress-text" id="upgradeProgressText">0 / 50</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="score-item">
-                <div class="score-label">Achievements</div>
-                <div class="score-value" id="achievementsCount">0 / 12</div>
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="achievementProgress" style="width: 0%"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Upgrades -->
-        <div class="panel upgrades-area">
-            <h2>🛒 Upgrades</h2>
-            <div id="upgradesList"></div>
-        </div>
-
-        <!-- Rewards -->
-        <div class="panel rewards-area">
-            <h2>🏆 Achievements</h2>
-            <div id="rewardsList"></div>
         </div>
     </div>
 
     <script>
-        // Game State
         const gameState = {
             crystals: 0,
             totalCrystals: 0,
@@ -89,277 +38,81 @@
             achievements: new Set()
         };
 
-        // Upgrades Configuration
-        const upgrades = [
-            {
-                id: 'betterPick',
-                name: '⛏️ Better Pickaxe',
-                desc: '+1 crystal per click',
-                basePrice: 10,
-                priceMultiplier: 1.5,
-                effect: () => { gameState.clickValue += 1; }
-            },
-            {
-                id: 'crystalMagnet',
-                name: '🧲 Crystal Magnet',
-                desc: '+2 crystals per click',
-                basePrice: 50,
-                priceMultiplier: 1.6,
-                effect: () => { gameState.clickValue += 2; }
-            },
-            {
-                id: 'miningDrone',
-                name: '🤖 Mining Drone',
-                desc: '+1 crystal per second (auto)',
-                basePrice: 100,
-                priceMultiplier: 1.4,
-                effect: () => { gameState.autoClickValue += 1; }
-            },
-            {
-                id: 'crystalForge',
-                name: '🔥 Crystal Forge',
-                desc: '+5 crystals per click',
-                basePrice: 500,
-                priceMultiplier: 1.7,
-                effect: () => { gameState.clickValue += 5; }
-            },
-            {
-                id: 'autoMiner',
-                name: '🏭 Auto Miner',
-                desc: '+5 crystals per second (auto)',
-                basePrice: 1000,
-                priceMultiplier: 1.5,
-                effect: () => { gameState.autoClickValue += 5; }
-            },
-            {
-                id: 'quantumPick',
-                name: '⚡ Quantum Pickaxe',
-                desc: '+20 crystals per click',
-                basePrice: 5000,
-                priceMultiplier: 1.8,
-                effect: () => { gameState.clickValue += 20; }
-            },
-            {
-                id: 'crystalFactory',
-                name: '🏗️ Crystal Factory',
-                desc: '+25 crystals per second (auto)',
-                basePrice: 10000,
-                priceMultiplier: 1.6,
-                effect: () => { gameState.autoClickValue += 25; }
-            },
-            {
-                id: 'cosmicMiner',
-                name: '🌌 Cosmic Miner',
-                desc: '+100 crystals per second (auto)',
-                basePrice: 50000,
-                priceMultiplier: 1.7,
-                effect: () => { gameState.autoClickValue += 100; }
-            }
-        ];
-
-        // Achievements Configuration
-        const achievements = [
-            { id: 'first_click', name: 'First Step', desc: 'Click the crystal for the first time', icon: '👆', check: () => gameState.totalClicks >= 1 },
-            { id: 'clicks_100', name: 'Dedicated Clicker', desc: 'Click 100 times', icon: '💪', check: () => gameState.totalClicks >= 100 },
-            { id: 'clicks_1000', name: 'Click Master', desc: 'Click 1,000 times', icon: '🏅', check: () => gameState.totalClicks >= 1000 },
-            { id: 'crystals_100', name: 'Crystal Collector', desc: 'Collect 100 crystals total', icon: '💎', check: () => gameState.totalCrystals >= 100 },
-            { id: 'crystals_1000', name: 'Crystal Hoarder', desc: 'Collect 1,000 crystals total', icon: '💰', check: () => gameState.totalCrystals >= 1000 },
-            { id: 'crystals_10000', name: 'Crystal Tycoon', desc: 'Collect 10,000 crystals total', icon: '👑', check: () => gameState.totalCrystals >= 10000 },
-            { id: 'crystals_100000', name: 'Crystal Emperor', desc: 'Collect 100,000 crystals total', icon: '🌟', check: () => gameState.totalCrystals >= 100000 },
-            { id: 'first_upgrade', name: 'Upgraded!', desc: 'Purchase your first upgrade', icon: '⬆️', check: () => getTotalUpgrades() >= 1 },
-            { id: 'upgrades_10', name: 'Upgrade Enthusiast', desc: 'Own 10 upgrades total', icon: '📈', check: () => getTotalUpgrades() >= 10 },
-            { id: 'upgrades_25', name: 'Upgrade Addict', desc: 'Own 25 upgrades total', icon: '🚀', check: () => getTotalUpgrades() >= 25 },
-            { id: 'auto_active', name: 'Automation Begins', desc: 'Get your first auto-clicker', icon: '🤖', check: () => gameState.autoClickValue >= 1 },
-            { id: 'power_50', name: 'Power Overwhelming', desc: 'Reach 50 click power', icon: '⚡', check: () => gameState.clickValue >= 50 }
-        ];
-
-        // Initialize upgrade counts
-        upgrades.forEach(u => gameState.upgrades[u.id] = 0);
-
-        // DOM Elements
         const clickBtn = document.getElementById('clickBtn');
-        const totalCrystalsEl = document.getElementById('totalCrystals');
-        const clickPowerEl = document.getElementById('clickPower');
-        const totalClicksEl = document.getElementById('totalClicks');
-        const upgradesOwnedEl = document.getElementById('upgradesOwned');
-        const upgradesListEl = document.getElementById('upgradesList');
-        const rewardsListEl = document.getElementById('rewardsList');
+        const crystalCountEl = document.getElementById('crystalCount');
         const clickValueDisplayEl = document.getElementById('clickValueDisplay');
         const autoIndicatorEl = document.getElementById('autoIndicator');
         const autoValueEl = document.getElementById('autoValue');
-        const crystalVisualEl = document.getElementById('crystalVisual');
-        const powerVisualEl = document.getElementById('powerVisual');
-        const upgradeProgressEl = document.getElementById('upgradeProgress');
-        const upgradeProgressTextEl = document.getElementById('upgradeProgressText');
-        const achievementProgressEl = document.getElementById('achievementProgress');
-        const achievementsCountEl = document.getElementById('achievementsCount');
+        const pluralEl = document.getElementById('pluralS');
+        const treeBlossomsEl = document.getElementById('treeBlossoms');
 
-        // Helper Functions
+        // Blossom positions (canopy area) – percentage from top-left of tree stage
+        const BLOSSOM_MAX = 80;
+        const BLOSSOM_IMG = 'images/cherry-blossom.png';
+        const blossomPositions = (function () {
+            const positions = [];
+            for (let i = 0; i < BLOSSOM_MAX; i++) {
+                const t = i / BLOSSOM_MAX;
+                const angle = t * Math.PI * 0.85 + Math.PI * 0.08;
+                const r = 32 + (i % 4) * 6 + (i % 7) * 3;
+                positions.push({
+                    x: 50 + Math.cos(angle) * r,
+                    y: 28 + Math.sin(angle) * r * 0.75
+                });
+            }
+            return positions;
+        })();
+
+        function renderBlossoms() {
+            const n = Math.min(Math.floor(gameState.crystals), BLOSSOM_MAX);
+            treeBlossomsEl.innerHTML = '';
+            for (let i = 0; i < n; i++) {
+                const p = blossomPositions[i];
+                const img = document.createElement('img');
+                img.src = BLOSSOM_IMG;
+                img.alt = '';
+                img.className = 'blossom-petal';
+                img.style.left = p.x + '%';
+                img.style.top = p.y + '%';
+                treeBlossomsEl.appendChild(img);
+            }
+        }
+
         function formatNumber(num) {
             if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
             if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
             return Math.floor(num).toString();
         }
 
-        function getUpgradePrice(upgrade) {
-            const count = gameState.upgrades[upgrade.id];
-            return Math.floor(upgrade.basePrice * Math.pow(upgrade.priceMultiplier, count));
-        }
-
-        function getTotalUpgrades() {
-            return Object.values(gameState.upgrades).reduce((a, b) => a + b, 0);
-        }
-
-        // Create floating number effect
         function createFloatingNumber(x, y, value) {
             const el = document.createElement('div');
             el.className = 'float-number';
-            el.textContent = '+' + formatNumber(value);
+            el.textContent = '+' + formatNumber(value) + ' 🌸';
             el.style.left = x + 'px';
             el.style.top = y + 'px';
             document.body.appendChild(el);
             setTimeout(() => el.remove(), 1000);
         }
 
-        // Update visual stats
-        function updateVisualStats() {
-            // Crystal gems visualization (show more gems as crystals increase)
-            const crystalLevel = Math.min(10, Math.floor(Math.log10(gameState.totalCrystals + 1)));
-            crystalVisualEl.innerHTML = '';
-            for (let i = 0; i < 10; i++) {
-                const span = document.createElement('span');
-                span.className = 'stat-icon' + (i < crystalLevel ? ' active' : '');
-                span.textContent = '💎';
-                crystalVisualEl.appendChild(span);
-            }
-
-            // Power visualization
-            const powerLevel = Math.min(10, Math.floor(gameState.clickValue / 10));
-            powerVisualEl.innerHTML = '';
-            for (let i = 0; i < 10; i++) {
-                const span = document.createElement('span');
-                span.className = 'stat-icon' + (i < powerLevel ? ' active' : '');
-                span.textContent = '⚡';
-                powerVisualEl.appendChild(span);
-            }
-
-            // Upgrade progress
-            const totalUpgrades = getTotalUpgrades();
-            const maxUpgrades = 50;
-            const progressPercent = Math.min(100, (totalUpgrades / maxUpgrades) * 100);
-            upgradeProgressEl.style.width = progressPercent + '%';
-            upgradeProgressTextEl.textContent = totalUpgrades + ' / ' + maxUpgrades;
-
-            // Achievement progress
-            const achievementPercent = (gameState.achievements.size / achievements.length) * 100;
-            achievementProgressEl.style.width = achievementPercent + '%';
-            achievementsCountEl.textContent = gameState.achievements.size + ' / ' + achievements.length;
-        }
-
-        // Update UI
         function updateUI() {
-            totalCrystalsEl.textContent = formatNumber(gameState.crystals);
-            clickPowerEl.textContent = formatNumber(gameState.clickValue);
-            totalClicksEl.textContent = formatNumber(gameState.totalClicks);
-            upgradesOwnedEl.textContent = getTotalUpgrades();
+            crystalCountEl.textContent = formatNumber(gameState.crystals);
             clickValueDisplayEl.textContent = '+' + formatNumber(gameState.clickValue);
-
-            // Auto indicator
+            if (pluralEl) pluralEl.textContent = gameState.clickValue === 1 ? '' : 's';
+            renderBlossoms();
             if (gameState.autoClickValue > 0) {
                 autoIndicatorEl.classList.add('active');
                 autoValueEl.textContent = formatNumber(gameState.autoClickValue);
             }
-
-            updateVisualStats();
-            renderUpgrades();
-            checkAchievements();
         }
 
-        // Render Upgrades
-        function renderUpgrades() {
-            upgradesListEl.innerHTML = '';
-            upgrades.forEach(upgrade => {
-                const price = getUpgradePrice(upgrade);
-                const canAfford = gameState.crystals >= price;
-                const count = gameState.upgrades[upgrade.id];
-
-                const div = document.createElement('div');
-                div.className = 'upgrade-item' + (canAfford ? '' : ' locked') + (count > 0 ? ' purchased' : '');
-                div.innerHTML = `
-                    <div class="upgrade-header">
-                        <span class="upgrade-name">${upgrade.name}</span>
-                        <span class="upgrade-count">${count}</span>
-                    </div>
-                    <div class="upgrade-desc">${upgrade.desc}</div>
-                    <div class="upgrade-price ${canAfford ? 'affordable' : 'expensive'}">
-                        💎 ${formatNumber(price)}
-                    </div>
-                `;
-
-                if (canAfford) {
-                    div.addEventListener('click', () => purchaseUpgrade(upgrade));
-                }
-
-                upgradesListEl.appendChild(div);
-            });
-        }
-
-        // Render Achievements
-        function renderAchievements() {
-            rewardsListEl.innerHTML = '';
-            achievements.forEach(achievement => {
-                const unlocked = gameState.achievements.has(achievement.id);
-                const div = document.createElement('div');
-                div.className = 'reward-item' + (unlocked ? ' unlocked' : ' locked');
-                div.innerHTML = `
-                    <span class="reward-icon">${achievement.icon}</span>
-                    <div class="reward-info">
-                        <div class="reward-name">${achievement.name}</div>
-                        <div class="reward-desc">${achievement.desc}</div>
-                    </div>
-                `;
-                rewardsListEl.appendChild(div);
-            });
-        }
-
-        // Check Achievements
-        function checkAchievements() {
-            let newAchievement = false;
-            achievements.forEach(achievement => {
-                if (!gameState.achievements.has(achievement.id) && achievement.check()) {
-                    gameState.achievements.add(achievement.id);
-                    newAchievement = true;
-                }
-            });
-            if (newAchievement) {
-                renderAchievements();
-            }
-        }
-
-        // Purchase Upgrade
-        function purchaseUpgrade(upgrade) {
-            const price = getUpgradePrice(upgrade);
-            if (gameState.crystals >= price) {
-                gameState.crystals -= price;
-                gameState.upgrades[upgrade.id]++;
-                upgrade.effect();
-                updateUI();
-            }
-        }
-
-        // Click Handler
         clickBtn.addEventListener('click', (e) => {
             gameState.crystals += gameState.clickValue;
             gameState.totalCrystals += gameState.clickValue;
             gameState.totalClicks++;
-
-            // Create floating number at click position
             createFloatingNumber(e.clientX, e.clientY, gameState.clickValue);
-
             updateUI();
         });
 
-        // Auto-click loop
         setInterval(() => {
             if (gameState.autoClickValue > 0) {
                 gameState.crystals += gameState.autoClickValue;
@@ -368,7 +121,6 @@
             }
         }, 1000);
 
-        // Save game periodically
         function saveGame() {
             const saveData = {
                 crystals: gameState.crystals,
@@ -382,7 +134,6 @@
             localStorage.setItem('crystalClickerSave', JSON.stringify(saveData));
         }
 
-        // Load game
         function loadGame() {
             const saved = localStorage.getItem('crystalClickerSave');
             if (saved) {
@@ -394,25 +145,14 @@
                 gameState.autoClickValue = data.autoClickValue || 0;
                 gameState.upgrades = data.upgrades || {};
                 gameState.achievements = new Set(data.achievements || []);
-                
-                // Ensure all upgrades exist
-                upgrades.forEach(u => {
-                    if (!(u.id in gameState.upgrades)) {
-                        gameState.upgrades[u.id] = 0;
-                    }
-                });
             }
         }
 
-        // Initialize
         loadGame();
-        renderAchievements();
+        renderBlossoms();
         updateUI();
 
-        // Auto-save every 30 seconds
         setInterval(saveGame, 30000);
-
-        // Save on page close
         window.addEventListener('beforeunload', saveGame);
     </script>
 </body>
