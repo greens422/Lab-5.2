@@ -122,6 +122,21 @@ h1 {
     background: rgba(199, 21, 133, 0.06);
 }
 
+.reset-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #1e5a8a;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #3d8fc7;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.reset-btn:hover {
+    background: #e8f4fc;
+    border-color: #1e5a8a;
+}
+
 /* Legacy tree button (if used elsewhere) */
 .tree-btn {
     width: 180px;

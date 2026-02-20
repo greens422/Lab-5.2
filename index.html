@@ -24,6 +24,7 @@
             <div class="auto-indicator" id="autoIndicator">
                 <p>Blossoms drifting in: <span class="auto-value" id="autoValue">0</span>/sec</p>
             </div>
+            <button type="button" class="reset-btn" id="resetBtn">Reset tree</button>
         </div>
     </div>
 
@@ -46,35 +47,61 @@
         const pluralEl = document.getElementById('pluralS');
         const treeBlossomsEl = document.getElementById('treeBlossoms');
 
-        // Blossom positions (canopy area) – percentage from top-left of tree stage
-        const BLOSSOM_MAX = 80;
+        const BLOSSOM_MAX = 400;
         const BLOSSOM_IMG = 'images/cherry-blossom.png';
-        const blossomPositions = (function () {
-            const positions = [];
-            for (let i = 0; i < BLOSSOM_MAX; i++) {
-                const t = i / BLOSSOM_MAX;
-                const angle = t * Math.PI * 0.85 + Math.PI * 0.08;
-                const r = 32 + (i % 4) * 6 + (i % 7) * 3;
-                positions.push({
-                    x: 50 + Math.cos(angle) * r,
-                    y: 28 + Math.sin(angle) * r * 0.75
-                });
-            }
-            return positions;
-        })();
 
-        function renderBlossoms() {
-            const n = Math.min(Math.floor(gameState.crystals), BLOSSOM_MAX);
+        function addBlossomAt(percentX, percentY) {
+            const img = document.createElement('img');
+            img.src = BLOSSOM_IMG;
+            img.alt = '';
+            img.className = 'blossom-petal';
+            img.style.left = percentX + '%';
+            img.style.top = percentY + '%';
+            treeBlossomsEl.appendChild(img);
+        }
+
+        function trimBlossomsToMax() {
+            while (treeBlossomsEl.children.length > BLOSSOM_MAX) {
+                treeBlossomsEl.removeChild(treeBlossomsEl.firstChild);
+            }
+        }
+
+        function resetTree() {
             treeBlossomsEl.innerHTML = '';
+            gameState.crystals = 0;
+            gameState.totalCrystals = 0;
+            gameState.clickValue = 1;
+            gameState.totalClicks = 0;
+            gameState.autoClickValue = 0;
+            gameState.upgrades = {};
+            gameState.achievements = new Set();
+            updateUI();
+            saveGame();
+        }
+
+        // Tree boundary: ellipse matching canopy/trunk (percent). Only add blossoms inside.
+        function isInsideTreeBoundary(percentX, percentY) {
+            const cx = 50, cy = 50, rx = 42, ry = 48;
+            const dx = (percentX - cx) / rx;
+            const dy = (percentY - cy) / ry;
+            return dx * dx + dy * dy <= 1 && percentY >= 4 && percentY <= 97;
+        }
+
+        function randomTreePosition() {
+            const cx = 50, cy = 50, rx = 42, ry = 48;
+            const angle = Math.random() * Math.PI * 2;
+            const r = Math.sqrt(Math.random());
+            return {
+                x: cx + rx * r * Math.cos(angle),
+                y: cy + ry * r * Math.sin(angle)
+            };
+        }
+
+        function seedBlossomsForLoad() {
+            const n = Math.min(Math.floor(gameState.crystals), BLOSSOM_MAX);
             for (let i = 0; i < n; i++) {
-                const p = blossomPositions[i];
-                const img = document.createElement('img');
-                img.src = BLOSSOM_IMG;
-                img.alt = '';
-                img.className = 'blossom-petal';
-                img.style.left = p.x + '%';
-                img.style.top = p.y + '%';
-                treeBlossomsEl.appendChild(img);
+                const p = randomTreePosition();
+                addBlossomAt(p.x, p.y);
             }
         }
 
@@ -98,7 +125,6 @@
             crystalCountEl.textContent = formatNumber(gameState.crystals);
             clickValueDisplayEl.textContent = '+' + formatNumber(gameState.clickValue);
             if (pluralEl) pluralEl.textContent = gameState.clickValue === 1 ? '' : 's';
-            renderBlossoms();
             if (gameState.autoClickValue > 0) {
                 autoIndicatorEl.classList.add('active');
                 autoValueEl.textContent = formatNumber(gameState.autoClickValue);
@@ -106,6 +132,21 @@
         }
 
         clickBtn.addEventListener('click', (e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const percentX = ((e.clientX - rect.left) / rect.width) * 100;
+            const percentY = ((e.clientY - rect.top) / rect.height) * 100;
+            if (!isInsideTreeBoundary(percentX, percentY)) return;
+            for (let i = 0; i < gameState.clickValue; i++) {
+                const offset = (i - gameState.clickValue / 2) * 3;
+                const px = percentX + (Math.random() - 0.5) * 8 + offset;
+                const py = percentY + (Math.random() - 0.5) * 8;
+                if (isInsideTreeBoundary(px, py)) {
+                    addBlossomAt(px, py);
+                } else {
+                    addBlossomAt(percentX, percentY);
+                }
+            }
+            trimBlossomsToMax();
             gameState.crystals += gameState.clickValue;
             gameState.totalCrystals += gameState.clickValue;
             gameState.totalClicks++;
@@ -115,6 +156,11 @@
 
         setInterval(() => {
             if (gameState.autoClickValue > 0) {
+                for (let i = 0; i < gameState.autoClickValue; i++) {
+                    const p = randomTreePosition();
+                    addBlossomAt(p.x, p.y);
+                }
+                trimBlossomsToMax();
                 gameState.crystals += gameState.autoClickValue;
                 gameState.totalCrystals += gameState.autoClickValue;
                 updateUI();
@@ -149,8 +195,14 @@
         }
 
         loadGame();
-        renderBlossoms();
+        seedBlossomsForLoad();
         updateUI();
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            if (confirm('Reset the tree and all progress? Blossoms and upgrades will be cleared.')) {
+                resetTree();
+            }
+        });
 
         setInterval(saveGame, 30000);
         window.addEventListener('beforeunload', saveGame);
