@@ -47,7 +47,7 @@
         const pluralEl = document.getElementById('pluralS');
         const treeBlossomsEl = document.getElementById('treeBlossoms');
 
-        const BLOSSOM_MAX = 400;
+        const BLOSSOM_MAX = 200;
         const BLOSSOM_IMG = 'images/cherry-blossom.png';
 
         function addBlossomAt(percentX, percentY) {
@@ -79,16 +79,20 @@
             saveGame();
         }
 
-        // Tree boundary: ellipse matching canopy/trunk (percent). Only add blossoms inside.
+        // Tree boundary: canopy only. Trunk and ground are not tappable.
         function isInsideTreeBoundary(percentX, percentY) {
             const cx = 50, cy = 50, rx = 42, ry = 48;
             const dx = (percentX - cx) / rx;
             const dy = (percentY - cy) / ry;
-            return dx * dx + dy * dy <= 1 && percentY >= 4 && percentY <= 97;
+            const inEllipse = dx * dx + dy * dy <= 1 && percentY >= 4 && percentY <= 97;
+            if (!inEllipse) return false;
+            // No tap over trunk and ground (lower center)
+            if (percentY > 50 && percentX > 18 && percentX < 82) return false;
+            return true;
         }
 
         function randomTreePosition() {
-            const cx = 50, cy = 50, rx = 42, ry = 48;
+            const cx = 50, cy = 42, rx = 40, ry = 36;
             const angle = Math.random() * Math.PI * 2;
             const r = Math.sqrt(Math.random());
             return {
@@ -136,8 +140,10 @@
             const percentX = ((e.clientX - rect.left) / rect.width) * 100;
             const percentY = ((e.clientY - rect.top) / rect.height) * 100;
             if (!isInsideTreeBoundary(percentX, percentY)) return;
-            for (let i = 0; i < gameState.clickValue; i++) {
-                const offset = (i - gameState.clickValue / 2) * 3;
+            const currentCount = treeBlossomsEl.children.length;
+            const canAdd = Math.min(gameState.clickValue, BLOSSOM_MAX - currentCount);
+            for (let i = 0; i < canAdd; i++) {
+                const offset = (i - canAdd / 2) * 3;
                 const px = percentX + (Math.random() - 0.5) * 8 + offset;
                 const py = percentY + (Math.random() - 0.5) * 8;
                 if (isInsideTreeBoundary(px, py)) {
@@ -146,7 +152,6 @@
                     addBlossomAt(percentX, percentY);
                 }
             }
-            trimBlossomsToMax();
             gameState.crystals += gameState.clickValue;
             gameState.totalCrystals += gameState.clickValue;
             gameState.totalClicks++;
@@ -156,11 +161,12 @@
 
         setInterval(() => {
             if (gameState.autoClickValue > 0) {
-                for (let i = 0; i < gameState.autoClickValue; i++) {
+                const currentCount = treeBlossomsEl.children.length;
+                const canAdd = Math.min(gameState.autoClickValue, BLOSSOM_MAX - currentCount);
+                for (let i = 0; i < canAdd; i++) {
                     const p = randomTreePosition();
                     addBlossomAt(p.x, p.y);
                 }
-                trimBlossomsToMax();
                 gameState.crystals += gameState.autoClickValue;
                 gameState.totalCrystals += gameState.autoClickValue;
                 updateUI();
