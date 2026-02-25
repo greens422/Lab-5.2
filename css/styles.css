@@ -6,11 +6,16 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+<<<<<<< HEAD
     background-color: rgb(255, 209, 220);
+=======
+    background: linear-gradient(180deg, #a8d4f0 0%, #6eb5e0 35%, #3d8fc7 65%, #1e5a8a 100%);
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
     min-height: 100vh;
     color: #333;
 }
 
+<<<<<<< HEAD
 #header {
     display: flex;
     margin: 15px;
@@ -23,6 +28,8 @@ body {
     border-radius: 30px;
 }
 
+=======
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
 .game-container {
     display: grid;
     grid-template-columns: 1fr 300px 300px;
@@ -45,6 +52,7 @@ h1 {
 
 .panel {
     background: rgba(255, 255, 255, 0.7);
+<<<<<<< HEAD
     align-items: center;
     justify-content: center;
     background-color: rgb(252, 245, 233);
@@ -53,6 +61,13 @@ h1 {
     border-color: rgb(190, 174, 158);
     border-radius: 30px;
     margin: 15px;
+=======
+    border-radius: 0;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(199, 21, 133, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
 }
 
 .panel h2 {
@@ -100,10 +115,17 @@ h1 {
 
 .blossom-petal {
     position: absolute;
+<<<<<<< HEAD
     width: 36px;
     height: 36px;
     margin-left: -18px;
     margin-top: -18px;
+=======
+    width: 56px;
+    height: 56px;
+    margin-left: -28px;
+    margin-top: -28px;
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
     object-fit: contain;
     animation: blossomAppear 0.4s ease-out forwards;
 }
@@ -113,7 +135,10 @@ h1 {
         opacity: 0;
         transform: scale(0.3);
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
     to {
         opacity: 1;
         transform: scale(1);
@@ -127,7 +152,11 @@ h1 {
     border: none;
     background: transparent;
     cursor: pointer;
+<<<<<<< HEAD
     border-radius: 12px;
+=======
+    border-radius: 0;
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
 }
 
 .tree-hit-area:hover {
@@ -145,10 +174,16 @@ h1 {
     color: #1e5a8a;
     background: rgba(255, 255, 255, 0.9);
     border: 1px solid #3d8fc7;
+<<<<<<< HEAD
     border-radius: 8px;
     cursor: pointer;
 }
 
+=======
+    border-radius: 0;
+    cursor: pointer;
+}
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
 .reset-btn:hover {
     background: #e8f4fc;
     border-color: #1e5a8a;
@@ -158,7 +193,11 @@ h1 {
 .tree-btn {
     width: 180px;
     height: 220px;
+<<<<<<< HEAD
     border-radius: 20px 20px 8px 8px;
+=======
+    border-radius: 0;
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
     background: linear-gradient(180deg, #ffb7c5 0%, #ff9aac 25%, #8B4513 75%, #654321 100%);
     border: 4px solid #8B4513;
     cursor: pointer;
@@ -171,7 +210,11 @@ h1 {
 .crystal-btn {
     width: 180px;
     height: 220px;
+<<<<<<< HEAD
     border-radius: 20px 20px 8px 8px;
+=======
+    border-radius: 0;
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
     background: linear-gradient(180deg, #ffb7c5 0%, #ff9aac 25%, #8B4513 75%, #654321 100%);
     border: 4px solid #8B4513;
     cursor: pointer;
@@ -209,7 +252,10 @@ h1 {
         opacity: 1;
         transform: translateY(0) scale(1);
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
     100% {
         opacity: 0;
         transform: translateY(-100px) scale(1.5);
@@ -226,7 +272,11 @@ h1 {
 .score-item {
     background: rgba(0, 0, 0, 0.3);
     padding: 15px;
+<<<<<<< HEAD
     border-radius: 10px;
+=======
+    border-radius: 0;
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
 }
 
 .score-label {
@@ -248,7 +298,11 @@ h1 {
 .progress-bar {
     height: 20px;
     background: rgba(0, 0, 0, 0.5);
+<<<<<<< HEAD
     border-radius: 10px;
+=======
+    border-radius: 0;
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
     overflow: hidden;
     position: relative;
 }
@@ -256,7 +310,11 @@ h1 {
 .progress-fill {
     height: 100%;
     background: linear-gradient(90deg, #ffb7c5, #c71585);
+<<<<<<< HEAD
     border-radius: 10px;
+=======
+    border-radius: 0;
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
     transition: width 0.3s ease;
 }
 
@@ -298,7 +356,11 @@ h1 {
 .upgrade-item {
     background: rgba(0, 0, 0, 0.3);
     padding: 15px;
+<<<<<<< HEAD
     border-radius: 10px;
+=======
+    border-radius: 0;
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
     margin-bottom: 10px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -335,7 +397,11 @@ h1 {
     background: #c71585;
     color: #fff;
     padding: 2px 8px;
+<<<<<<< HEAD
     border-radius: 10px;
+=======
+    border-radius: 0;
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
     font-size: 0.8rem;
 }
 
@@ -369,7 +435,11 @@ h1 {
 .reward-item {
     background: rgba(0, 0, 0, 0.3);
     padding: 12px;
+<<<<<<< HEAD
     border-radius: 10px;
+=======
+    border-radius: 0;
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
     margin-bottom: 8px;
     display: flex;
     align-items: center;
@@ -419,7 +489,11 @@ h1 {
     margin-top: 15px;
     padding: 10px;
     background: rgba(0, 255, 136, 0.2);
+<<<<<<< HEAD
     border-radius: 10px;
+=======
+    border-radius: 0;
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
     text-align: center;
     display: none;
 }
@@ -436,6 +510,7 @@ h1 {
 
 /* Pulse animation for milestones */
 @keyframes pulse {
+<<<<<<< HEAD
 
     0%,
     100% {
@@ -445,6 +520,10 @@ h1 {
     50% {
         transform: scale(1.1);
     }
+=======
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
 }
 
 .reward-item.just-unlocked {
@@ -455,30 +534,45 @@ h1 {
     text-align: center;
     margin-bottom: 15px;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
 .nav-link a {
     color: #c71585;
     text-decoration: none;
 }
+<<<<<<< HEAD
 
 .nav-link a:hover {
     text-decoration: underline;
 }
 
+=======
+.nav-link a:hover {
+    text-decoration: underline;
+}
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
 .blossom-count,
 .crystal-count {
     font-size: 1.2rem;
     margin-bottom: 10px;
     color: #c71585;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
 .game-container.clicker-only {
     grid-template-columns: 1fr;
     justify-items: center;
     align-content: start;
     padding: 24px 20px 40px;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
 .game-container.clicker-only .click-area {
     width: 100%;
     max-width: 600px;
@@ -486,7 +580,10 @@ h1 {
     flex-direction: column;
     align-items: center;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
 .game-container.clicker-only .panel.click-area {
     padding: 28px 32px 36px;
 }
@@ -496,7 +593,10 @@ h1 {
     .game-container {
         grid-template-columns: 1fr 1fr;
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
     .click-area {
         grid-column: 1 / -1;
     }
@@ -506,4 +606,8 @@ h1 {
     .game-container {
         grid-template-columns: 1fr;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
