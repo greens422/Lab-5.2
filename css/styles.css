@@ -1,0 +1,509 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: rgb(255, 209, 220);
+    min-height: 100vh;
+    color: #333;
+}
+
+#header {
+    display: flex;
+    margin: 15px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(252, 245, 233);
+    border-style: solid;
+    border-width: 5px;
+    border-color: rgb(190, 174, 158);
+    border-radius: 30px;
+}
+
+.game-container {
+    display: grid;
+    grid-template-columns: 1fr 300px 300px;
+    grid-template-rows: auto 1fr;
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+h1 {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 2.5rem;
+    color: #c71585;
+    text-shadow: 0 0 20px rgba(255, 182, 193, 0.6);
+    margin-bottom: 10px;
+}
+
+.panel {
+    background: rgba(255, 255, 255, 0.7);
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(252, 245, 233);
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgb(190, 174, 158);
+    border-radius: 30px;
+    margin: 15px;
+}
+
+.panel h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #c71585;
+    font-size: 1.3rem;
+    border-bottom: 2px solid rgba(199, 21, 133, 0.3);
+    padding-bottom: 10px;
+}
+
+/* Click Area */
+.click-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tree: bare tree + blossoms layer + click area – large and centered */
+.tree-stage {
+    position: relative;
+    width: min(520px, 90vw);
+    height: min(680px, 115vw);
+    max-height: 75vh;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.tree-bare {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
+    pointer-events: none;
+}
+
+.tree-blossoms {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.blossom-petal {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    margin-left: -18px;
+    margin-top: -18px;
+    object-fit: contain;
+    animation: blossomAppear 0.4s ease-out forwards;
+}
+
+@keyframes blossomAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.tree-hit-area {
+    position: absolute;
+    inset: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+.tree-hit-area:hover {
+    background: rgba(255, 182, 193, 0.08);
+}
+
+.tree-hit-area:active {
+    background: rgba(199, 21, 133, 0.06);
+}
+
+.reset-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #1e5a8a;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #3d8fc7;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.reset-btn:hover {
+    background: #e8f4fc;
+    border-color: #1e5a8a;
+}
+
+/* Legacy tree button (if used elsewhere) */
+.tree-btn {
+    width: 180px;
+    height: 220px;
+    border-radius: 20px 20px 8px 8px;
+    background: linear-gradient(180deg, #ffb7c5 0%, #ff9aac 25%, #8B4513 75%, #654321 100%);
+    border: 4px solid #8B4513;
+    cursor: pointer;
+    font-size: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.crystal-btn {
+    width: 180px;
+    height: 220px;
+    border-radius: 20px 20px 8px 8px;
+    background: linear-gradient(180deg, #ffb7c5 0%, #ff9aac 25%, #8B4513 75%, #654321 100%);
+    border: 4px solid #8B4513;
+    cursor: pointer;
+    font-size: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.click-text {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.click-value {
+    color: #c71585;
+    font-weight: bold;
+}
+
+/* Floating numbers animation */
+.float-number {
+    position: fixed;
+    pointer-events: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #c71585;
+    text-shadow: 0 0 10px rgba(255, 182, 193, 0.9);
+    animation: floatUp 1s ease-out forwards;
+    z-index: 1000;
+}
+
+@keyframes floatUp {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-100px) scale(1.5);
+    }
+}
+
+/* Scoreboard */
+.scoreboard {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.score-item {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.score-label {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.score-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #c71585;
+}
+
+.progress-container {
+    margin-top: 10px;
+}
+
+.progress-bar {
+    height: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ffb7c5, #c71585);
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.8rem;
+    color: #fff;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+}
+
+/* Visual Stats */
+.visual-stats {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.stat-icon {
+    font-size: 1.5rem;
+    opacity: 0.3;
+    transition: opacity 0.3s;
+}
+
+.stat-icon.active {
+    opacity: 1;
+}
+
+/* Upgrades */
+.upgrades-area {
+    overflow-y: auto;
+    max-height: 500px;
+}
+
+.upgrade-item {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+
+.upgrade-item:hover:not(.locked) {
+    background: rgba(199, 21, 133, 0.15);
+    border-color: #c71585;
+}
+
+.upgrade-item.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.upgrade-item.purchased {
+    border-color: #c71585;
+}
+
+.upgrade-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.upgrade-name {
+    font-weight: bold;
+    color: #fff;
+}
+
+.upgrade-count {
+    background: #c71585;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+}
+
+.upgrade-desc {
+    font-size: 0.85rem;
+    color: #aaa;
+    margin-bottom: 8px;
+}
+
+.upgrade-price {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: bold;
+}
+
+.upgrade-price.affordable {
+    color: #c71585;
+}
+
+.upgrade-price.expensive {
+    color: #ff4444;
+}
+
+/* Rewards */
+.rewards-area {
+    overflow-y: auto;
+    max-height: 500px;
+}
+
+.reward-item {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+}
+
+.reward-item.locked {
+    opacity: 0.4;
+}
+
+.reward-item.unlocked {
+    background: rgba(255, 215, 0, 0.2);
+    border: 1px solid gold;
+}
+
+.reward-icon {
+    font-size: 2rem;
+    filter: grayscale(100%);
+    transition: filter 0.3s;
+}
+
+.reward-item.unlocked .reward-icon {
+    filter: grayscale(0%);
+}
+
+.reward-info {
+    flex: 1;
+}
+
+.reward-name {
+    font-weight: bold;
+    color: #fff;
+}
+
+.reward-desc {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.reward-item.unlocked .reward-name {
+    color: gold;
+}
+
+/* Auto-clicker indicator */
+.auto-indicator {
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(0, 255, 136, 0.2);
+    border-radius: 10px;
+    text-align: center;
+    display: none;
+}
+
+.auto-indicator.active {
+    display: block;
+}
+
+.auto-value {
+    font-size: 1.2rem;
+    color: #c71585;
+    font-weight: bold;
+}
+
+/* Pulse animation for milestones */
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.reward-item.just-unlocked {
+    animation: pulse 0.5s ease-in-out 3;
+}
+
+.nav-link {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.nav-link a {
+    color: #c71585;
+    text-decoration: none;
+}
+
+.nav-link a:hover {
+    text-decoration: underline;
+}
+
+.blossom-count,
+.crystal-count {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #c71585;
+}
+
+.game-container.clicker-only {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-content: start;
+    padding: 24px 20px 40px;
+}
+
+.game-container.clicker-only .click-area {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.game-container.clicker-only .panel.click-area {
+    padding: 28px 32px 36px;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .game-container {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .click-area {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 700px) {
+    .game-container {
+        grid-template-columns: 1fr;
+    }
+}
