@@ -56,7 +56,7 @@
 
     <div class="help-panel" id="helpPanel" aria-hidden="true">
         <h3>How to play</h3>
-        <p>Click anywhere on the tree to add blossoms. Each click gives blossoms based on your click value. Spend blossoms on the Scoreboard &amp; Upgrades page to buy upgrades. Some upgrades increase blossoms per click; others add automatic blossoms per second. Earn achievements by reaching milestones.</p>
+        <p>click anywhere on the tree to add blossoms. every time you click gives blossoms based on your click value. you can spend acquired blossoms on the scoreboard &amp; upgrades page to buy upgrades. a few upgrades increase blossoms per click while others add automatic blossoms per second. earn achievements by reaching milestones.</p>
         <h3>Upgrades</h3>
         <ul id="helpUpgradesList"></ul>
         <h3>Rewards (Achievements)</h3>
@@ -249,28 +249,28 @@
         const helpUpgradesList = document.getElementById('helpUpgradesList');
         const helpRewardsList = document.getElementById('helpRewardsList');
         const upgradesHelp = [
-            'Gentle Breeze: +1 blossom per click',
-            'Soft Wind: +2 blossoms per click',
+            'gentle breeze: +1 blossom per click',
+            'soft wind: +2 blossoms per click',
             'Butterflies: +1 blossom/sec (auto)',
-            'Spring Gust: +5 blossoms per click',
-            'Garden Breeze: +5 blossoms/sec (auto)',
-            'Blossom Storm: +20 blossoms per click',
-            'Petal Shower: +25 blossoms/sec (auto)',
-            'Full Bloom: +100 blossoms/sec (auto)'
+            'spring gust: +5 blossoms per click',
+            'garden breeze: +5 blossoms/sec (auto)',
+            'blossom storm: +20 blossoms per click',
+            'petal shower: +25 blossoms/sec (auto)',
+            'full bloom: +100 blossoms/sec (auto)'
         ];
         const rewardsHelp = [
-            'First Touch: Touch the tree once',
-            'Tender Care: 100 touches',
-            'Tree Friend: 1,000 touches',
-            'Blossom Bud: 100 total blossoms',
-            'Blossom Bloom: 1,000 total',
-            'Blossom Grove: 10,000 total',
-            'Blossom Haven: 100,000 total',
-            'First Upgrade: Buy first upgrade',
-            'Growing Garden: 10 upgrades',
-            'Blossom Keeper: 25 upgrades',
-            'Breeze Arrives: First auto blossoms',
-            'Peak Bloom: 50 blossoms per click'
+            'first Touch: Touch the tree once',
+            'tender Care: 100 touches',
+            'tree Friend: 1,000 touches',
+            'blossom bud: 100 total blossoms',
+            'blossom bloom: 1,000 total',
+            'blossom grove: 10,000 total',
+            'blossom haven: 100,000 total',
+            'first upgrade: buy first upgrade',
+            'growing garden: 10 upgrades',
+            'blossom keeper: 25 upgrades',
+            'breeze arrives: first auto blossoms',
+            'peak bloom: 50 blossoms per click'
         ];
         upgradesHelp.forEach(function (text) { const li = document.createElement('li'); li.textContent = text; helpUpgradesList.appendChild(li); });
         rewardsHelp.forEach(function (text) { const li = document.createElement('li'); li.textContent = text; helpRewardsList.appendChild(li); });
