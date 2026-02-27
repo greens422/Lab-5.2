@@ -1,56 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
-
-=======
->>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cherry Blossom Tree - Clicker</title>
+    <title>Evergrow</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<<<<<<< HEAD
-
 <body>
-    <div id="header">
-        <img src="images/left-decor.png" width="300px">
-        <img src="images/logo.png" width="500px">
-        <img src="images/right-decor.png" width="300px">
+    <div class="header-wrap">
+    <header class="evergrow-header">
+        <div class="header-inner">
+            <div class="header-logo-group">
+                <img src="images/left-decor.png" alt="" class="header-img header-left">
+                <img src="images/logo.png" alt="Evergrow" class="header-logo">
+                <img src="images/right-decor.png" alt="" class="header-img header-right">
+            </div>
+        </div>
+    </header>
+    <nav class="nav-below-header">
+        <a href="stats.html" class="nav-link-top">Scoreboard &amp; Upgrades →</a>
+        <button type="button" class="help-btn" id="helpBtn">Help</button>
+    </nav>
     </div>
 
-    <p class="nav-link"><a href="stats.html">Scoreboard & Upgrades →</a></p>
-
-    <!-- Click Area -->
-    <div class="panel click-area">
-        <h2>Click the tree to add blossoms</h2>
-        <p class="blossom-count">Blossoms on tree: <span id="crystalCount">0</span></p>
-        <div class="tree-stage" id="treeStage">
-            <img class="tree-bare" id="treeBare" src="images/empty-tree.png" alt="">
-            <div class="tree-blossoms" id="treeBlossoms"></div>
-            <button class="tree-hit-area" id="clickBtn" aria-label="Click tree to add cherry blossoms"></button>
-        </div>
-        <p class="click-text">Each click adds <span class="click-value" id="clickValueDisplay">+1</span>
-            blossom<span id="pluralS">s</span></p>
-        <div class="auto-indicator" id="autoIndicator">
-            <p>Blossoms drifting in: <span class="auto-value" id="autoValue">0</span>/sec</p>
-        </div>
-        <button type="button" class="reset-btn" id="resetBtn">Reset tree</button>
-    </div>
-=======
-<body>
     <div class="game-container clicker-only">
-        <h1>🌸 Cherry Blossom Tree 🌸</h1>
-        <p class="nav-link"><a href="stats.html">Scoreboard & Upgrades →</a></p>
 
         <!-- Click Area -->
         <div class="panel click-area">
-            <h2>Click the tree to add blossoms</h2>
+            <h2 class="click-instruction">Click the tree to add blossoms</h2>
             <p class="blossom-count">Blossoms on tree: <span id="crystalCount">0</span></p>
+            <div class="tree-wrapper">
             <div class="tree-stage" id="treeStage">
                 <img class="tree-bare" id="treeBare" src="images/empty-tree.png" alt="">
                 <div class="tree-blossoms" id="treeBlossoms"></div>
                 <button class="tree-hit-area" id="clickBtn" aria-label="Click tree to add cherry blossoms"></button>
+            </div>
             </div>
             <p class="click-text">Each click adds <span class="click-value" id="clickValueDisplay">+1</span> blossom<span id="pluralS">s</span></p>
             <div class="auto-indicator" id="autoIndicator">
@@ -58,10 +42,30 @@
             </div>
             <button type="button" class="reset-btn" id="resetBtn">Reset tree</button>
         </div>
->>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
+    </div>
+
+    <div class="overlay" id="resetOverlay" aria-hidden="true">
+        <div class="overlay-panel">
+            <p>Reset the tree and all progress? Blossoms and upgrades will be cleared.</p>
+            <div class="overlay-actions">
+                <button type="button" id="resetConfirmBtn">Yes</button>
+                <button type="button" id="resetCancelBtn">No</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="help-panel" id="helpPanel" aria-hidden="true">
+        <h3>How to play</h3>
+        <p>Click anywhere on the tree to add blossoms. Each click gives blossoms based on your click value. Spend blossoms on the Scoreboard &amp; Upgrades page to buy upgrades. Some upgrades increase blossoms per click; others add automatic blossoms per second. Earn achievements by reaching milestones.</p>
+        <h3>Upgrades</h3>
+        <ul id="helpUpgradesList"></ul>
+        <h3>Rewards (Achievements)</h3>
+        <ul id="helpRewardsList"></ul>
+        <button type="button" id="helpCloseBtn">Close</button>
     </div>
 
     <script>
+        window.addEventListener('load', function () {
         const gameState = {
             crystals: 0,
             totalCrystals: 0,
@@ -80,11 +84,7 @@
         const pluralEl = document.getElementById('pluralS');
         const treeBlossomsEl = document.getElementById('treeBlossoms');
 
-<<<<<<< HEAD
-        const BLOSSOM_MAX = 400;
-=======
         const BLOSSOM_MAX = 200;
->>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
         const BLOSSOM_IMG = 'images/cherry-blossom.png';
 
         function addBlossomAt(percentX, percentY) {
@@ -116,37 +116,15 @@
             saveGame();
         }
 
-<<<<<<< HEAD
-        // Tree boundary: ellipse matching canopy/trunk (percent). Only add blossoms inside.
-=======
-        // Tree boundary: canopy only. Trunk and ground are not tappable.
->>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
+        // Tree boundary: entire tree area (trunk, branches, canopy) is clickable.
         function isInsideTreeBoundary(percentX, percentY) {
-            const cx = 50, cy = 50, rx = 42, ry = 48;
-            const dx = (percentX - cx) / rx;
-            const dy = (percentY - cy) / ry;
-<<<<<<< HEAD
-            return dx * dx + dy * dy <= 1 && percentY >= 4 && percentY <= 97;
+            return percentX >= 0 && percentX <= 100 && percentY >= 0 && percentY <= 100;
         }
 
         function randomTreePosition() {
-            const cx = 50, cy = 50, rx = 42, ry = 48;
-=======
-            const inEllipse = dx * dx + dy * dy <= 1 && percentY >= 4 && percentY <= 97;
-            if (!inEllipse) return false;
-            // No tap over trunk and ground (lower center)
-            if (percentY > 50 && percentX > 18 && percentX < 82) return false;
-            return true;
-        }
-
-        function randomTreePosition() {
-            const cx = 50, cy = 42, rx = 40, ry = 36;
->>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
-            const angle = Math.random() * Math.PI * 2;
-            const r = Math.sqrt(Math.random());
             return {
-                x: cx + rx * r * Math.cos(angle),
-                y: cy + ry * r * Math.sin(angle)
+                x: 5 + Math.random() * 90,
+                y: 5 + Math.random() * 90
             };
         }
 
@@ -160,24 +138,16 @@
 
         function formatNumber(num) {
             if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-<<<<<<< HEAD
-            if (num >= 1000) re~urn (num / 1000).toFixed(1) + 'K';
-=======
             if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
->>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
             return Math.floor(num).toString();
         }
 
         function createFloatingNumber(x, y, value) {
             const el = document.createElement('div');
             el.className = 'float-number';
-            el.textContent = '+' + formatNumber(value) + ' 🌸';
+            el.textContent = '+' + formatNumber(value);
             el.style.left = x + 'px';
-<<<<<<< HEAD
-            el.styl~~e.top = y + 'px';
-=======
             el.style.top = y + 'px';
->>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
             document.body.appendChild(el);
             setTimeout(() => el.remove(), 1000);
         }
@@ -197,15 +167,10 @@
             const percentX = ((e.clientX - rect.left) / rect.width) * 100;
             const percentY = ((e.clientY - rect.top) / rect.height) * 100;
             if (!isInsideTreeBoundary(percentX, percentY)) return;
-<<<<<<< HEAD
-            for (let i = 0; i < gameState.clickValue; i++) {
-                const offset = (i - gameState.clickValue / 2) * 3;
-=======
             const currentCount = treeBlossomsEl.children.length;
             const canAdd = Math.min(gameState.clickValue, BLOSSOM_MAX - currentCount);
             for (let i = 0; i < canAdd; i++) {
                 const offset = (i - canAdd / 2) * 3;
->>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
                 const px = percentX + (Math.random() - 0.5) * 8 + offset;
                 const py = percentY + (Math.random() - 0.5) * 8;
                 if (isInsideTreeBoundary(px, py)) {
@@ -214,10 +179,6 @@
                     addBlossomAt(percentX, percentY);
                 }
             }
-<<<<<<< HEAD
-            trimBlossomsToMax();
-=======
->>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
             gameState.crystals += gameState.clickValue;
             gameState.totalCrystals += gameState.clickValue;
             gameState.totalClicks++;
@@ -227,20 +188,12 @@
 
         setInterval(() => {
             if (gameState.autoClickValue > 0) {
-<<<<<<< HEAD
-                for (let i = 0; i < gameState.autoClickValue; i++) {
-                    const p = randomTreePosition();
-                    addBlossomAt(p.x, p.y);
-                }
-                trimBlossomsToMax();
-=======
                 const currentCount = treeBlossomsEl.children.length;
                 const canAdd = Math.min(gameState.autoClickValue, BLOSSOM_MAX - currentCount);
                 for (let i = 0; i < canAdd; i++) {
                     const p = randomTreePosition();
                     addBlossomAt(p.x, p.y);
                 }
->>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
                 gameState.crystals += gameState.autoClickValue;
                 gameState.totalCrystals += gameState.autoClickValue;
                 updateUI();
@@ -278,19 +231,61 @@
         seedBlossomsForLoad();
         updateUI();
 
-        document.getElementById('resetBtn').addEventListener('click', () => {
-            if (confirm('Reset the tree and all progress? Blossoms and upgrades will be cleared.')) {
-                resetTree();
-            }
+        document.getElementById('resetBtn').addEventListener('click', function () {
+            document.getElementById('resetOverlay').setAttribute('aria-hidden', 'false');
+            document.getElementById('resetOverlay').classList.add('visible');
+        });
+        document.getElementById('resetConfirmBtn').addEventListener('click', function () {
+            resetTree();
+            document.getElementById('resetOverlay').classList.remove('visible');
+            document.getElementById('resetOverlay').setAttribute('aria-hidden', 'true');
+        });
+        document.getElementById('resetCancelBtn').addEventListener('click', function () {
+            document.getElementById('resetOverlay').classList.remove('visible');
+            document.getElementById('resetOverlay').setAttribute('aria-hidden', 'true');
+        });
+
+        const helpPanel = document.getElementById('helpPanel');
+        const helpUpgradesList = document.getElementById('helpUpgradesList');
+        const helpRewardsList = document.getElementById('helpRewardsList');
+        const upgradesHelp = [
+            'Gentle Breeze: +1 blossom per click',
+            'Soft Wind: +2 blossoms per click',
+            'Butterflies: +1 blossom/sec (auto)',
+            'Spring Gust: +5 blossoms per click',
+            'Garden Breeze: +5 blossoms/sec (auto)',
+            'Blossom Storm: +20 blossoms per click',
+            'Petal Shower: +25 blossoms/sec (auto)',
+            'Full Bloom: +100 blossoms/sec (auto)'
+        ];
+        const rewardsHelp = [
+            'First Touch: Touch the tree once',
+            'Tender Care: 100 touches',
+            'Tree Friend: 1,000 touches',
+            'Blossom Bud: 100 total blossoms',
+            'Blossom Bloom: 1,000 total',
+            'Blossom Grove: 10,000 total',
+            'Blossom Haven: 100,000 total',
+            'First Upgrade: Buy first upgrade',
+            'Growing Garden: 10 upgrades',
+            'Blossom Keeper: 25 upgrades',
+            'Breeze Arrives: First auto blossoms',
+            'Peak Bloom: 50 blossoms per click'
+        ];
+        upgradesHelp.forEach(function (text) { const li = document.createElement('li'); li.textContent = text; helpUpgradesList.appendChild(li); });
+        rewardsHelp.forEach(function (text) { const li = document.createElement('li'); li.textContent = text; helpRewardsList.appendChild(li); });
+        document.getElementById('helpBtn').addEventListener('click', function () {
+            helpPanel.classList.toggle('visible');
+            helpPanel.setAttribute('aria-hidden', helpPanel.classList.contains('visible') ? 'false' : 'true');
+        });
+        document.getElementById('helpCloseBtn').addEventListener('click', function () {
+            helpPanel.classList.remove('visible');
+            helpPanel.setAttribute('aria-hidden', 'true');
         });
 
         setInterval(saveGame, 30000);
         window.addEventListener('beforeunload', saveGame);
+        });
     </script>
 </body>
-<<<<<<< HEAD
-
 </html>
-=======
-</html>
->>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d

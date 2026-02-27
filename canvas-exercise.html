@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas - Houses, Cars, Stars (Ch 23 Ex 3)</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f5f5f5; }
+        h1 { margin-bottom: 16px; }
+        #canvas { display: block; background: #fff; border: 1px solid #ccc; margin-bottom: 16px; }
+        .controls { display: flex; gap: 12px; flex-wrap: wrap; }
+        .controls button { padding: 10px 20px; font-size: 1rem; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Chapter 23, Exercise 3 – Canvas drawing</h1>
+    <canvas id="canvas" width="600" height="400"></canvas>
+    <div class="controls">
+        <button type="button" id="btnHouse">Draw House</button>
+        <button type="button" id="btnCar">Draw Car</button>
+        <button type="button" id="btnStar">Draw Star</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        let x = 30;
+        const y = 200;
+        let lastHouseX = 30;
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function drawHouse() {
+            const w = 50;
+            const h = 50;
+
+            ctx.fillStyle = '#8B4513';
+            ctx.strokeStyle = '#5D3A1A';
+            ctx.lineWidth = 2;
+
+            ctx.fillRect(x, y, w, h);
+            ctx.strokeRect(x, y, w, h);
+
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + w / 2, y - 30);
+            ctx.lineTo(x + w, y);
+            ctx.closePath();
+            ctx.fillStyle = '#A0522D';
+            ctx.fill();
+            ctx.stroke();
+
+            lastHouseX = x;
+            x += 70;
+            if (x > canvas.width - 80) x = 30;
+        }
+
+        function drawCar() {
+            const carW = 70;
+            const carH = 30;
+            const houseW = 50;
+            const carX = lastHouseX + (houseW - carW) / 2;
+            const carY = y + 58;
+
+            ctx.fillStyle = '#4682B4';
+            ctx.strokeStyle = '#2F4F4F';
+            ctx.lineWidth = 2;
+            ctx.fillRect(carX, carY, carW, carH);
+            ctx.strokeRect(carX, carY, carW, carH);
+
+            ctx.fillStyle = '#333';
+            ctx.beginPath();
+            ctx.arc(carX + 18, carY + carH, 10, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(carX + carW - 18, carY + carH, 10, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        function drawStar() {
+            const skyTop = 25;
+            const skyBottom = 165;
+            const cx = 30 + Math.random() * (canvas.width - 60);
+            const cy = skyTop + Math.random() * (skyBottom - skyTop);
+            const outer = 18;
+            const inner = 8;
+
+            ctx.fillStyle = '#FFD700';
+            ctx.strokeStyle = '#B8860B';
+            ctx.lineWidth = 2;
+
+            ctx.beginPath();
+            for (let i = 0; i < 10; i++) {
+                const r = i % 2 === 0 ? outer : inner;
+                const angle = (Math.PI / 2) + (i * Math.PI / 5);
+                const px = cx + r * Math.cos(angle);
+                const py = cy - r * Math.sin(angle);
+                if (i === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        document.getElementById('btnHouse').addEventListener('click', drawHouse);
+        document.getElementById('btnCar').addEventListener('click', drawCar);
+        document.getElementById('btnStar').addEventListener('click', drawStar);
+    </script>
+</body>
+</html>

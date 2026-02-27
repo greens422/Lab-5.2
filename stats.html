@@ -3,25 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scoreboard & Upgrades - Cherry Blossom Tree</title>
+    <title>Scoreboard & Upgrades</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <div class="header-wrap">
+    <header class="evergrow-header">
+        <div class="header-inner">
+            <div class="header-logo-group">
+                <img src="images/left-decor.png" alt="" class="header-img header-left">
+                <img src="images/logo.png" alt="Evergrow" class="header-logo">
+                <img src="images/right-decor.png" alt="" class="header-img header-right">
+            </div>
+        </div>
+    </header>
+    <nav class="nav-below-header">
+        <a href="index.html" class="nav-link-top">← Back to Tree</a>
+        <button type="button" class="help-btn" id="helpBtn">Help</button>
+    </nav>
+    </div>
+
     <div class="game-container">
-<<<<<<< HEAD
-        <h1>🌸 Scoreboard & Upgrades 🌸</h1>
-=======
-        <h1>🌸 Cherry Blossom Tree</h1>
->>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
-        <p class="nav-link"><a href="index.html">← Back to Tree</a></p>
 
         <!-- Scoreboard -->
         <div class="panel scoreboard">
-<<<<<<< HEAD
-            <h2>📊 Scoreboard 📊</h2>
-=======
-            <h2>📊 Scoreboard</h2>
->>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
+            <h2>Scoreboard</h2>
             
             <div class="score-item">
                 <div class="score-label">Total Blossoms</div>
@@ -64,26 +70,31 @@
 
         <!-- Upgrades -->
         <div class="panel upgrades-area">
-<<<<<<< HEAD
-            <h2>🛒 Upgrades 🛒</h2>
-=======
-            <h2>🛒 Upgrades</h2>
->>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
+            <h2>Upgrades</h2>
             <div id="upgradesList"></div>
         </div>
 
         <!-- Achievements -->
         <div class="panel rewards-area">
-<<<<<<< HEAD
-            <h2>🏆 Achievements 🏆</h2>
-=======
-            <h2>🏆 Achievements</h2>
->>>>>>> fde99e971b19f95867818ba1bfc59596f6e2451d
+            <h2>Achievements</h2>
             <div id="rewardsList"></div>
         </div>
     </div>
 
+    <div class="help-panel" id="helpPanel" aria-hidden="true">
+        <h3>How to play</h3>
+        <p>Click the tree (on the branches) to add blossoms. Spend blossoms here on upgrades. Some upgrades increase blossoms per click; others add automatic blossoms per second. Earn achievements by reaching milestones.</p>
+        <h3>Upgrades</h3>
+        <ul id="helpUpgradesList"></ul>
+        <h3>Rewards (Achievements)</h3>
+        <ul id="helpRewardsList"></ul>
+        <button type="button" id="helpCloseBtn">Close</button>
+    </div>
+
+    <div class="congrats-banner" id="congratsBanner" role="status"></div>
+
     <script>
+        window.addEventListener('load', function () {
         const gameState = {
             crystals: 0,
             totalCrystals: 0,
@@ -95,29 +106,29 @@
         };
 
         const upgrades = [
-            { id: 'betterPick', name: '🌸 Gentle Breeze', desc: '+1 blossom per click', basePrice: 10, priceMultiplier: 1.5, effect: () => { gameState.clickValue += 1; } },
-            { id: 'crystalMagnet', name: '🍃 Soft Wind', desc: '+2 blossoms per click', basePrice: 50, priceMultiplier: 1.6, effect: () => { gameState.clickValue += 2; } },
-            { id: 'miningDrone', name: '🦋 Butterflies', desc: '+1 blossom per second (auto)', basePrice: 100, priceMultiplier: 1.4, effect: () => { gameState.autoClickValue += 1; } },
-            { id: 'crystalForge', name: '🌬️ Spring Gust', desc: '+5 blossoms per click', basePrice: 500, priceMultiplier: 1.7, effect: () => { gameState.clickValue += 5; } },
-            { id: 'autoMiner', name: '🌿 Garden Breeze', desc: '+5 blossoms per second (auto)', basePrice: 1000, priceMultiplier: 1.5, effect: () => { gameState.autoClickValue += 5; } },
-            { id: 'quantumPick', name: '💨 Blossom Storm', desc: '+20 blossoms per click', basePrice: 5000, priceMultiplier: 1.8, effect: () => { gameState.clickValue += 20; } },
-            { id: 'crystalFactory', name: '🌸 Petal Shower', desc: '+25 blossoms per second (auto)', basePrice: 10000, priceMultiplier: 1.6, effect: () => { gameState.autoClickValue += 25; } },
-            { id: 'cosmicMiner', name: '🌳 Full Bloom', desc: '+100 blossoms per second (auto)', basePrice: 50000, priceMultiplier: 1.7, effect: () => { gameState.autoClickValue += 100; } }
+            { id: 'betterPick', name: 'Gentle Breeze', desc: '+1 blossom per click', basePrice: 10, priceMultiplier: 1.5, effect: () => { gameState.clickValue += 1; } },
+            { id: 'crystalMagnet', name: 'Soft Wind', desc: '+2 blossoms per click', basePrice: 50, priceMultiplier: 1.6, effect: () => { gameState.clickValue += 2; } },
+            { id: 'miningDrone', name: 'Butterflies', desc: '+1 blossom per second (auto)', basePrice: 100, priceMultiplier: 1.4, effect: () => { gameState.autoClickValue += 1; } },
+            { id: 'crystalForge', name: 'Spring Gust', desc: '+5 blossoms per click', basePrice: 500, priceMultiplier: 1.7, effect: () => { gameState.clickValue += 5; } },
+            { id: 'autoMiner', name: 'Garden Breeze', desc: '+5 blossoms per second (auto)', basePrice: 1000, priceMultiplier: 1.5, effect: () => { gameState.autoClickValue += 5; } },
+            { id: 'quantumPick', name: 'Blossom Storm', desc: '+20 blossoms per click', basePrice: 5000, priceMultiplier: 1.8, effect: () => { gameState.clickValue += 20; } },
+            { id: 'crystalFactory', name: 'Petal Shower', desc: '+25 blossoms per second (auto)', basePrice: 10000, priceMultiplier: 1.6, effect: () => { gameState.autoClickValue += 25; } },
+            { id: 'cosmicMiner', name: 'Full Bloom', desc: '+100 blossoms per second (auto)', basePrice: 50000, priceMultiplier: 1.7, effect: () => { gameState.autoClickValue += 100; } }
         ];
 
         const achievements = [
-            { id: 'first_click', name: 'First Touch', desc: 'Touch the tree for the first time', icon: '👆', check: () => gameState.totalClicks >= 1 },
-            { id: 'clicks_100', name: 'Tender Care', desc: 'Touch the tree 100 times', icon: '💪', check: () => gameState.totalClicks >= 100 },
-            { id: 'clicks_1000', name: 'Tree Friend', desc: 'Touch the tree 1,000 times', icon: '🏅', check: () => gameState.totalClicks >= 1000 },
-            { id: 'crystals_100', name: 'Blossom Bud', desc: 'Add 100 blossoms total', icon: '🌸', check: () => gameState.totalCrystals >= 100 },
-            { id: 'crystals_1000', name: 'Blossom Bloom', desc: 'Add 1,000 blossoms total', icon: '💰', check: () => gameState.totalCrystals >= 1000 },
-            { id: 'crystals_10000', name: 'Blossom Grove', desc: 'Add 10,000 blossoms total', icon: '👑', check: () => gameState.totalCrystals >= 10000 },
-            { id: 'crystals_100000', name: 'Blossom Haven', desc: 'Add 100,000 blossoms total', icon: '🌟', check: () => gameState.totalCrystals >= 100000 },
-            { id: 'first_upgrade', name: 'First Upgrade', desc: 'Purchase your first upgrade', icon: '⬆️', check: () => getTotalUpgrades() >= 1 },
-            { id: 'upgrades_10', name: 'Growing Garden', desc: 'Own 10 upgrades total', icon: '📈', check: () => getTotalUpgrades() >= 10 },
-            { id: 'upgrades_25', name: 'Blossom Keeper', desc: 'Own 25 upgrades total', icon: '🚀', check: () => getTotalUpgrades() >= 25 },
-            { id: 'auto_active', name: 'Breeze Arrives', desc: 'Get your first gentle breeze', icon: '🦋', check: () => gameState.autoClickValue >= 1 },
-            { id: 'power_50', name: 'Peak Bloom', desc: 'Reach 50 blossoms per click', icon: '🌸', check: () => gameState.clickValue >= 50 }
+            { id: 'first_click', name: 'First Touch', desc: 'Touch the tree for the first time', icon: '', check: () => gameState.totalClicks >= 1 },
+            { id: 'clicks_100', name: 'Tender Care', desc: 'Touch the tree 100 times', icon: '', check: () => gameState.totalClicks >= 100 },
+            { id: 'clicks_1000', name: 'Tree Friend', desc: 'Touch the tree 1,000 times', icon: '', check: () => gameState.totalClicks >= 1000 },
+            { id: 'crystals_100', name: 'Blossom Bud', desc: 'Add 100 blossoms total', icon: '', check: () => gameState.totalCrystals >= 100 },
+            { id: 'crystals_1000', name: 'Blossom Bloom', desc: 'Add 1,000 blossoms total', icon: '', check: () => gameState.totalCrystals >= 1000 },
+            { id: 'crystals_10000', name: 'Blossom Grove', desc: 'Add 10,000 blossoms total', icon: '', check: () => gameState.totalCrystals >= 10000 },
+            { id: 'crystals_100000', name: 'Blossom Haven', desc: 'Add 100,000 blossoms total', icon: '', check: () => gameState.totalCrystals >= 100000 },
+            { id: 'first_upgrade', name: 'First Upgrade', desc: 'Purchase your first upgrade', icon: '', check: () => getTotalUpgrades() >= 1 },
+            { id: 'upgrades_10', name: 'Growing Garden', desc: 'Own 10 upgrades total', icon: '', check: () => getTotalUpgrades() >= 10 },
+            { id: 'upgrades_25', name: 'Blossom Keeper', desc: 'Own 25 upgrades total', icon: '', check: () => getTotalUpgrades() >= 25 },
+            { id: 'auto_active', name: 'Breeze Arrives', desc: 'Get your first gentle breeze', icon: '', check: () => gameState.autoClickValue >= 1 },
+            { id: 'power_50', name: 'Peak Bloom', desc: 'Reach 50 blossoms per click', icon: '', check: () => gameState.clickValue >= 50 }
         ];
 
         upgrades.forEach(u => gameState.upgrades[u.id] = 0);
@@ -156,7 +167,10 @@
             for (let i = 0; i < 10; i++) {
                 const span = document.createElement('span');
                 span.className = 'stat-icon' + (i < crystalLevel ? ' active' : '');
-                span.textContent = '🌸';
+                const img = document.createElement('img');
+                img.src = 'images/cherry-blossom.png';
+                img.alt = '';
+                span.appendChild(img);
                 crystalVisualEl.appendChild(span);
             }
             const powerLevel = Math.min(10, Math.floor(gameState.clickValue / 10));
@@ -164,7 +178,10 @@
             for (let i = 0; i < 10; i++) {
                 const span = document.createElement('span');
                 span.className = 'stat-icon' + (i < powerLevel ? ' active' : '');
-                span.textContent = '🌸';
+                const img = document.createElement('img');
+                img.src = 'images/cherry-blossom.png';
+                img.alt = '';
+                span.appendChild(img);
                 powerVisualEl.appendChild(span);
             }
             const totalUpgrades = getTotalUpgrades();
@@ -202,7 +219,7 @@
                     </div>
                     <div class="upgrade-desc">${upgrade.desc}</div>
                     <div class="upgrade-price ${canAfford ? 'affordable' : 'expensive'}">
-                        🌸 ${formatNumber(price)}
+                        ${formatNumber(price)} blossoms
                     </div>
                 `;
                 if (canAfford) {
@@ -231,13 +248,23 @@
 
         function checkAchievements() {
             let newAchievement = false;
+            let achievedName = '';
             achievements.forEach(achievement => {
                 if (!gameState.achievements.has(achievement.id) && achievement.check()) {
                     gameState.achievements.add(achievement.id);
                     newAchievement = true;
+                    achievedName = achievement.name;
                 }
             });
-            if (newAchievement) renderAchievements();
+            if (newAchievement) {
+                renderAchievements();
+                const banner = document.getElementById('congratsBanner');
+                banner.textContent = 'Congratulations! Achievement unlocked: ' + achievedName;
+                banner.classList.add('visible');
+                setTimeout(function () {
+                    banner.classList.remove('visible');
+                }, 4000);
+            }
         }
 
         function purchaseUpgrade(upgrade) {
@@ -294,6 +321,23 @@
 
         setInterval(saveGame, 30000);
         window.addEventListener('beforeunload', saveGame);
+
+        var helpPanel = document.getElementById('helpPanel');
+        var helpUpgradesList = document.getElementById('helpUpgradesList');
+        var helpRewardsList = document.getElementById('helpRewardsList');
+        var upgradesHelp = ['Gentle Breeze: +1 blossom per click', 'Soft Wind: +2 blossoms per click', 'Butterflies: +1 blossom/sec (auto)', 'Spring Gust: +5 blossoms per click', 'Garden Breeze: +5 blossoms/sec (auto)', 'Blossom Storm: +20 blossoms per click', 'Petal Shower: +25 blossoms/sec (auto)', 'Full Bloom: +100 blossoms/sec (auto)'];
+        var rewardsHelp = ['First Touch', 'Tender Care', 'Tree Friend', 'Blossom Bud', 'Blossom Bloom', 'Blossom Grove', 'Blossom Haven', 'First Upgrade', 'Growing Garden', 'Blossom Keeper', 'Breeze Arrives', 'Peak Bloom'];
+        upgradesHelp.forEach(function (t) { var li = document.createElement('li'); li.textContent = t; helpUpgradesList.appendChild(li); });
+        rewardsHelp.forEach(function (t) { var li = document.createElement('li'); li.textContent = t; helpRewardsList.appendChild(li); });
+        document.getElementById('helpBtn').addEventListener('click', function () {
+            helpPanel.classList.toggle('visible');
+            helpPanel.setAttribute('aria-hidden', helpPanel.classList.contains('visible') ? 'false' : 'true');
+        });
+        document.getElementById('helpCloseBtn').addEventListener('click', function () {
+            helpPanel.classList.remove('visible');
+            helpPanel.setAttribute('aria-hidden', 'true');
+        });
+        });
     </script>
 </body>
 </html>
