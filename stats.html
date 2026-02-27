@@ -325,8 +325,30 @@
         var helpPanel = document.getElementById('helpPanel');
         var helpUpgradesList = document.getElementById('helpUpgradesList');
         var helpRewardsList = document.getElementById('helpRewardsList');
-        var upgradesHelp = ['Gentle Breeze: +1 blossom per click', 'Soft Wind: +2 blossoms per click', 'Butterflies: +1 blossom/sec (auto)', 'Spring Gust: +5 blossoms per click', 'Garden Breeze: +5 blossoms/sec (auto)', 'Blossom Storm: +20 blossoms per click', 'Petal Shower: +25 blossoms/sec (auto)', 'Full Bloom: +100 blossoms/sec (auto)'];
-        var rewardsHelp = ['First Touch', 'Tender Care', 'Tree Friend', 'Blossom Bud', 'Blossom Bloom', 'Blossom Grove', 'Blossom Haven', 'First Upgrade', 'Growing Garden', 'Blossom Keeper', 'Breeze Arrives', 'Peak Bloom'];
+        var upgradesHelp = [
+            'gentle breeze: +1 blossom per click',
+            'soft wind: +1 blossom per click',
+            'butterflies: +1 blossom/sec (auto)',
+            'spring gust: +2 blossoms per click',
+            'garden breeze: +2 blossoms/sec (auto)',
+            'blossom storm: +5 blossoms per click',
+            'petal shower: +5 blossoms/sec (auto)',
+            'full bloom: +10 blossoms/sec (auto)'
+        ];
+        var rewardsHelp = [
+            'first touch: touch the tree once',
+            'tender care: 20 touches',
+            'tree friend: 50 touches',
+            'blossom bud: 20 total blossoms',
+            'blossom bloom: 50 total blossoms',
+            'blossom grove: 100 total blossoms',
+            'blossom haven: 250 total blossoms',
+            'first upgrade: buy first upgrade',
+            'growing garden: 5 upgrades',
+            'blossom keeper: 10 upgrades',
+            'breeze arrives: first auto blossoms',
+            'peak bloom: 10 blossoms per click'
+        ];
         upgradesHelp.forEach(function (t) { var li = document.createElement('li'); li.textContent = t; helpUpgradesList.appendChild(li); });
         rewardsHelp.forEach(function (t) { var li = document.createElement('li'); li.textContent = t; helpRewardsList.appendChild(li); });
         document.getElementById('helpBtn').addEventListener('click', function () {

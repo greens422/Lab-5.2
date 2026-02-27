@@ -250,27 +250,27 @@
         const helpRewardsList = document.getElementById('helpRewardsList');
         const upgradesHelp = [
             'gentle breeze: +1 blossom per click',
-            'soft wind: +2 blossoms per click',
-            'Butterflies: +1 blossom/sec (auto)',
-            'spring gust: +5 blossoms per click',
-            'garden breeze: +5 blossoms/sec (auto)',
-            'blossom storm: +20 blossoms per click',
-            'petal shower: +25 blossoms/sec (auto)',
-            'full bloom: +100 blossoms/sec (auto)'
+            'soft wind: +1 blossom per click',
+            'butterflies: +1 blossom/sec (auto)',
+            'spring gust: +2 blossoms per click',
+            'garden breeze: +2 blossoms/sec (auto)',
+            'blossom storm: +5 blossoms per click',
+            'petal shower: +5 blossoms/sec (auto)',
+            'full bloom: +10 blossoms/sec (auto)'
         ];
         const rewardsHelp = [
-            'first touch: Touch the tree once',
-            'tender care: 100 touches',
-            'tree friend: 1,000 touches',
-            'blossom bud: 100 total blossoms',
-            'blossom bloom: 1,000 total',
-            'blossom grove: 10,000 total',
-            'blossom haven: 100,000 total',
+            'first touch: touch the tree once',
+            'tender care: 20 touches',
+            'tree friend: 50 touches',
+            'blossom bud: 20 total blossoms',
+            'blossom bloom: 50 total blossoms',
+            'blossom grove: 100 total blossoms',
+            'blossom haven: 250 total blossoms',
             'first upgrade: buy first upgrade',
-            'growing garden: 10 upgrades',
-            'blossom keeper: 25 upgrades',
+            'growing garden: 5 upgrades',
+            'blossom keeper: 10 upgrades',
             'breeze arrives: first auto blossoms',
-            'peak bloom: 50 blossoms per click'
+            'peak bloom: 10 blossoms per click'
         ];
         upgradesHelp.forEach(function (text) { const li = document.createElement('li'); li.textContent = text; helpUpgradesList.appendChild(li); });
         rewardsHelp.forEach(function (text) { const li = document.createElement('li'); li.textContent = text; helpRewardsList.appendChild(li); });
